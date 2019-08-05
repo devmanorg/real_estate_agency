@@ -1,0 +1,123 @@
+{% load l10n %}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Недвижимость">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Недвижимость</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+  </head>
+
+  <body style="background-color: #f5f5f5;">
+
+    <nav class="navbar" style="background-color: #2690c2;">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" style="color:white;" href="/">Недвижимость. Объявления</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-9">
+          <div class="row">
+            <div class="col-sm-4">
+              <form role="form" class="panel panel-default" method="GET" action="/search">
+                <div class="panel-body">
+                  <p>город</p>
+                  <div class="form-group">
+                    <select name="town" class="form-control">
+                      <option {%ifequal town active_town%}selected {%endifequal%}value="">---</option>
+                      {% for town in towns %}
+                        <option {%ifequal town active_town%}selected {%endifequal%}value="{{town}}">{{town}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group ">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="new_building" value="1" {%if new_building%}checked {%endif%}>
+                        только новостройки
+                      </label>
+                    </div>
+                  </div>
+                  <p><strong>Цена</strong></p>
+                  <div class="form-group ">
+                    <div class="input-group">
+                      <span class="input-group-addon">от</span>
+                      <input autocomplete="off" type="text" value="{%if min_price %}{{min_price}}{%endif%}" name="min_price" class="form-control js-price-format" placeholder="любая">
+                      <span class="input-group-addon">р.</span>
+                    </div>
+                  </div>
+                  <div class="form-group ">
+                    <div class="input-group">
+                      <span class="input-group-addon">до</span>
+                      <input autocomplete="off" type="text" value="{%if max_price %}{{max_price}}{%endif%}" name="max_price" class="form-control js-price-format" placeholder="любая">
+                      <span class="input-group-addon">р.</span>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-success" style="margin-top:15px; margin-bottom:25px;">Показать</button>
+                </div>
+              </form>
+            </div>
+            <div class="col-sm-8">
+              <div class="panel panel-default">
+                {% for flat in flats %}
+                  <div class="panel-body">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div>
+                          <div class="row">
+                            <div class="col-sm-7">
+                              <p><strong>Продается {{ flat.rooms_number }}-комнатная квартира</strong></p>
+                            </div>
+                            <div class="col-sm-5">
+                              <p class="text-right"><strong class="nowrap">{{ flat.price|localize }} р.</strong></p>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <p><i class="glyphicon glyphicon-map-marker"></i>&nbsp;{{ flat.town }}, {%if flat.settlement%} {{flat.settlement}}, {%endif%}{{ flat.address }}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <p>
+                          <span class="label label-success">комнат: {{ flat.rooms_number }}</span>
+                          {% if flat.living_area %}
+                            <span class="label label-primary">{{ flat.living_area }} кв.м.</span>
+                          {% endif %}
+                          <span class="label label-primary">{{ flat.construction_year }} г. постройки</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  {% if not foloop.last %}
+                    <hr style="margin:0">
+                  {% endif %}
+                {% endfor %}
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer style="height:200px;background-color: #2690c2;">
+      <div style="height: 145px;background-color: #f5f5f5;background-image: url(https://vnedvigke.ru/static/img/footer_bg.png);background-position: 0 0;background-repeat: repeat;"></div>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </body>
+</html>
