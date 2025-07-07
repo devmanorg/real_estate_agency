@@ -39,7 +39,7 @@
                     <select name="town" class="form-control">
                       <option {% if town == active_town %}selected {%endif%}value="">---</option>
                       {% for town in towns %}
-                        <option {% if town == active_town %}selected {%end%}value="{{town}}">{{town}}</option>
+                        <option {% if town == active_town %}selected {%endif%}value="{{town}}">{{town}}</option>
                       {% endfor %}
                     </select>
                   </div>
